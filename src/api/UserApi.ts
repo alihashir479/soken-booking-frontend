@@ -22,7 +22,6 @@ export const registerUser = async (formData: userRegistrationType) => {
 export const loginUser = async (formData: loginFormType) => {
   const response = await fetch(`${API_BASE_URL}/user/login`, {
     method: "POST",
-    credentials: 'include',
     headers: {
       "Content-Type": "application/json",
     },
@@ -32,9 +31,15 @@ export const loginUser = async (formData: loginFormType) => {
   if (!response.ok) {
     throw new Error("Failed to Logged in");
   }
+
+  let jsonResponse = await response.json()
+  localStorage.setItem('auth_token', JSON.stringify(jsonResponse.auth_token))
+
+  return jsonResponse.auth_token
 };
 
 export const logoutUser = async () => {
+  localStorage.removeItem('auth_token')
   const response = await fetch(`${API_BASE_URL}/auth/logout`, {
     method: 'POST',
     headers: {

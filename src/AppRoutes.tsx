@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import SignIn from "./pages/SignIn";
 import AddHotel from "./pages/AddHotel";
 import ProtectedRoute from "./components/ProtectedRoute";
+import MyHotels from "./pages/MyHotels";
 
 const AppRoutes = () => {
   return (
@@ -38,6 +39,14 @@ const AppRoutes = () => {
           element={
             <Layout>
               <AddHotel />
+            </Layout>
+          }
+        />
+        <Route
+          path="/my-hotels"
+          element={
+            <Layout>
+              <MyHotels />
             </Layout>
           }
         />
