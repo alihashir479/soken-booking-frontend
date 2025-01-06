@@ -25,3 +25,35 @@ export const fetchUserHotels = async ():Promise<HotelType[]> => {
 
   return response.json()
 }
+
+export const fetchHotelById = async (hotelId: string):Promise<HotelType> => {
+  const response = await fetch(`${API_BASE_URL}/my-hotels/${hotelId}`, fetchWrapper({
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }))
+
+  if(!response.ok) {
+    throw new Error('Error fetching hotel by Id')
+  }
+
+  return response.json()
+}
+
+type UpdateHotelParamterType = {
+  id: string;
+  hotelData: FormData
+}
+export const updateHotel = async (hotel: UpdateHotelParamterType):Promise<HotelType> => {
+  const response = await fetch(`${API_BASE_URL}/my-hotels/${hotel.id}`, fetchWrapper({
+    method: 'PUT',
+    body: hotel.hotelData
+  }))
+
+  if(!response.ok) {
+    throw new Error('Error Updating hotel')
+  }
+
+  return response.json()
+}
