@@ -57,17 +57,15 @@ const HoterFormSchema = z
         message: "Star rating cannot be null and cannot be less than 1",
       })
       .max(5, { message: "Cannot be more than 5" }),
-    imageUrls: z.array(z.string().optional()),
-    imageFiles: z.instanceof(FileList)
-    .refine((images) => images.length > 0, {
-      message: "At least one image is required",
-    })
-    .refine((images) => images.length <= 6, {
-      message: "maximum 6 images are allowed",
-    }),
-  }).refine((data) => (Array.from(data.imageFiles).length + data.imageUrls.length) <= 6,  {
+    imageUrls: z.string().array().optional(),
+    imageFiles: z.instanceof(FileList).optional()
+  }).refine((data) => (data.imageFiles?.length || 0) + (data.imageUrls?.length || 0) > 0, {
     path: ['imageFiles'],
-    message: 'Maximum 6 images are allowed'
+    message: 'At least one image is required'
+  })
+  .refine((data) => (data.imageFiles?.length || 0) + (data.imageUrls?.length || 0) < 7, {
+    path: ['imageFiles'],
+    message: 'Maximum of 6 images are allowed'
   })
 const ManageHotelForm = ({ handleSave, isLoading, hotelData }: Props) => {
   const formMethods = useForm<HotelFormData>({
@@ -99,8 +97,9 @@ const ManageHotelForm = ({ handleSave, isLoading, hotelData }: Props) => {
     hotelFormDataJson.facilities.forEach((facility, idx) => {
       formData.append(`facilities[${idx}]`, facility);
     });
+    console.log(hotelFormDataJson.imageUrls)
 
-    if (hotelFormDataJson.imageUrls.length > 0) {
+    if (hotelFormDataJson.imageUrls && hotelFormDataJson.imageUrls.length > 0) {
       hotelFormDataJson.imageUrls.forEach((imageUrl, idx) => {
         formData.append(`imageUrls[${idx}]`, imageUrl);
       });

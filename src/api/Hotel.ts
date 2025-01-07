@@ -57,3 +57,49 @@ export const updateHotel = async (hotel: UpdateHotelParamterType):Promise<HotelT
 
   return response.json()
 }
+type SearchQueryParams = {
+  destination?: string;
+  checkIn?: string;
+  checkOut?: string;
+  adultCount?: string;
+  childCount?: string;
+  page?: string;
+  facilities?: string[];
+  stars?: string[];
+  types?: string[];
+  price?: string;
+  sortOptions?: string;
+}
+
+type HotelSearchResponse = {
+  data: HotelType[],
+  pagination: {
+    page: number;
+    total: number;
+    pages: number;
+  }
+}
+export const fetchAllHotels = async (searchQueryParams: SearchQueryParams):Promise<HotelSearchResponse> => {
+  const params = new URLSearchParams()
+  params.append('destination', searchQueryParams.destination || '')
+  params.append('checkIn', searchQueryParams.checkIn || '')
+  params.append('checkOut', searchQueryParams.checkOut || '')
+  params.append('adultCount', searchQueryParams.adultCount || '')
+  params.append('childCount', searchQueryParams.childCount || '')
+  params.append('page', searchQueryParams.page || '')
+
+  params.append('price', searchQueryParams.price || '')
+  params.append('sortOptions', searchQueryParams.sortOptions || '')
+
+  params.append('stars', Array.isArray(searchQueryParams.stars) ? searchQueryParams.stars.join(',') : '')
+  params.append('types', Array.isArray(searchQueryParams.types) ? searchQueryParams.types.join(',') : '')
+  params.append('facilities', Array.isArray(searchQueryParams.facilities) ? searchQueryParams.facilities.join(',') : '')
+
+  const response = await fetch(`${API_BASE_URL}/hotels/search?${params}`)
+
+  if(!response.ok) {
+    throw new Error('Error fetching hotels')
+  }
+
+  return response.json()
+}
