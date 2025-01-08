@@ -8,6 +8,7 @@ import MyHotels from "./pages/MyHotels";
 import EditHotel from "./pages/EditHotel";
 import HomePage from "./pages/HomePage";
 import Search from "./pages/Search";
+import Detail from "./pages/Detail";
 
 const AppRoutes = () => {
   return (
@@ -41,6 +42,14 @@ const AppRoutes = () => {
         element={
           <Layout showHero>
             <Search />
+          </Layout>
+        }
+      />
+      <Route
+        path="/detail/:hotelId"
+        element={
+          <Layout showHero>
+            <Detail />
           </Layout>
         }
       />

@@ -2,12 +2,13 @@ import { loginUser } from "../api/UserApi";
 import { useContext, useState } from "react";
 import { AppContext } from "../contexts/AppContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SignInForm, { loginFormType } from "../components/forms/SignIn";
 
 const SignIn = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const naviagte = useNavigate();
+  const location = useLocation()
   const appContext = useContext(AppContext);
   const queryClient = useQueryClient();
 
@@ -23,7 +24,7 @@ const SignIn = () => {
         type: "SUCCESS",
       });
       await queryClient.invalidateQueries({ queryKey: ["authenticate"] });
-      naviagte("/");
+      naviagte(location.state?.from?.pathname || '');
     },
   });
 

@@ -103,3 +103,14 @@ export const fetchAllHotels = async (searchQueryParams: SearchQueryParams):Promi
 
   return response.json()
 }
+
+// this is for detail page, not auth user
+export const fetchHotel = async (hotelId: string):Promise<HotelType> => {
+  const response = await fetch(`${API_BASE_URL}/hotels/${hotelId}`)
+
+  if(!response.ok) {
+    throw new Error('Error fetching hotel')
+  }
+
+  return response.json()
+}
