@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { isLoggedIn } from "../api/Auth";
 import { loadStripe, Stripe } from "@stripe/stripe-js";
 
-const stripePromise = await loadStripe(import.meta.env.VITE_STRIPE_PUB_KEY)
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUB_KEY)
 
 type Props = {
   children: React.ReactNode;
