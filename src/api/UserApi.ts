@@ -1,5 +1,7 @@
 import { loginFormType } from "../components/forms/SignIn";
 import { userRegistrationType } from "../components/forms/UserRegistration";
+import { User } from "../types/types";
+import { fetchWrapper } from "./fetchWrapper";
 
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -51,4 +53,14 @@ export const logoutUser = async () => {
   if(!response.ok) {
     throw new Error('Failed to logout user')
   }
+}
+
+export const fetchCurrentUser = async ():Promise<User> => {
+  const response = await fetch(`${API_BASE_URL}/user/me`, fetchWrapper({}))
+
+  if(!response.ok) {
+    throw new Error('Error fetching user')
+  }
+
+  return response.json()
 }

@@ -1,3 +1,4 @@
+import { bookingFormSchema } from "../components/forms/BookingForm/BookingForm";
 import { HotelType } from "../types/types";
 import { fetchWrapper } from "./fetchWrapper";
 
@@ -113,4 +114,45 @@ export const fetchHotel = async (hotelId: string):Promise<HotelType> => {
   }
 
   return response.json()
+}
+
+export type PaymentIntentResponse = {
+  paymentIntentId: string;
+  clientSecret: string;
+  totalCost: number;
+}
+
+export const createPaymentIntent = async (hotelId: string, totalNights: string):Promise<PaymentIntentResponse> => {
+  const response = await fetch(`${API_BASE_URL}/hotels/${hotelId}/booking/payment-intent`, fetchWrapper({
+    method: 'POST',
+    headers: {
+      'Content-Type' : 'application/json'
+    },
+    body: JSON.stringify({totalNights})
+  }))
+
+  if(!response.ok) {
+    throw new Error('Error creating payment intent')
+  }
+
+  return response.json()
+}
+
+type BookingParams = {
+  data: bookingFormSchema,
+  hotelId: string;
+}
+
+export const createHotelBooking = async (data: BookingParams):Promise<void> => {
+  const response = await fetch(`${API_BASE_URL}/hotels/${data.hotelId}/booking`, fetchWrapper({
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data.data)
+  }))
+
+  if(!response.ok) {
+    throw new Error('Error creating booking')
+  }
 }

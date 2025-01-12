@@ -1,3 +1,15 @@
+export type BookingType = {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  adultCount: number;
+  childCount: number;
+  checkIn: string;
+  checkOut: string;
+  totalCost: number;
+}
+
 export type HotelType = {
   _id: string;
   userId: string;  
@@ -13,4 +25,13 @@ export type HotelType = {
   facilities: string[];
   imageUrls: string[];
   lastUpdated: string;
+  bookings: BookingType[]
+}
+
+export type User = {
+  _id: string;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
 }

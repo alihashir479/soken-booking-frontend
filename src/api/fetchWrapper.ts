@@ -1,6 +1,6 @@
 type OptionTypes = {
   method?: string;
-  body?: FormData | null;
+  body?: FormData | string;
   headers?: Record<string, string>;
 };
 export const fetchWrapper = (options: OptionTypes) => {
